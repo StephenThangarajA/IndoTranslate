@@ -5,7 +5,6 @@ import sun from './assets/sun.png'
 import moon from './assets/moon.png'
 
 function App() {
-
   useEffect(() => {
     const dropdowns = document.querySelectorAll(".dropdown-container"),
       inputLanguageDropdown = document.querySelector("#input-language"),
@@ -21,14 +20,14 @@ function App() {
     // Function to populate dropdown with options
     function populateDropdown(dropdown, options) {
       console.log(dropdown,options)
-      dropdown.innerHTML = "";
+      dropdown.querySelector("ul").innerHTML = "";
       options.forEach((option) => {
         const li = document.createElement("li");
         const title = option.name + " (" + option.native + ")";
         li.innerHTML = title;
         li.dataset.value = option.code;
         li.classList.add("option");
-        dropdown.appendChild(li);
+        dropdown.querySelector("ul").appendChild(li);
       });
     }
 
@@ -165,7 +164,7 @@ function App() {
   },[]);
 
   return (
-    <body>
+    <>
       <div className="mode">
         <label className="toggle" htmlFor="dark-mode-btn">
           <div className="toggle-track">
@@ -180,13 +179,13 @@ function App() {
         <div className="card input-wrapper">
           <div className="from">
             <span className="heading">From :</span>
-              <div className="dropdown-container">
+              <div className="dropdown-container" id="input-language">
                 <div className="dropdown-toggle">
                   <ion-icon name="globe-outline"></ion-icon>
                   <span className="selected" data-value="auto">Auto Detect</span>
                   <ion-icon name="chevron-down-outline"></ion-icon>
                 </div>
-                <ul className="dropdown-menu" id="input-language">
+                <ul className="dropdown-menu">
                   <li className="option active">DropDown Menu Item 1</li>
                   <li className="option">DropDown Menu Item 2</li>
                 </ul>
@@ -235,7 +234,7 @@ function App() {
         </div>
       </div>
     </div>
-  </body>
+  </>
   )
 }
 
