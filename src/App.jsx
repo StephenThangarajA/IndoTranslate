@@ -1,8 +1,10 @@
-import React,{useEffect} from 'react'
-import './index.css'
-import {languages} from './languages.js'
-import sun from './assets/sun.png'
-import moon from './assets/moon.png'
+import React, { useEffect } from 'react';
+import './index.css';
+import { languages } from './languages.js';
+import sun from './assets/sun.png';
+import moon from './assets/moon.png';
+import logo from './assets/Indo-Logo.png';
+import Tesseract from 'tesseract.js';
 
 function App() {
   useEffect(() => {
@@ -15,11 +17,13 @@ function App() {
       swapBtn = document.querySelector(".swap-position"),
       uploadDocument = document.querySelector("#upload-document"),
       uploadTitle = document.querySelector("#upload-title"),
-      downloadBtn = document.querySelector("#download-btn");
+      downloadBtn = document.querySelector("#download-btn"),
+      uploadImage = document.querySelector("#upload-image"),
+      imageUploadTitle = document.querySelector("#image-upload-title");
 
     // Function to populate dropdown with options
     function populateDropdown(dropdown, options) {
-      console.log(dropdown,options)
+      console.log(dropdown, options)
       dropdown.querySelector("ul").innerHTML = "";
       options.forEach((option) => {
         const li = document.createElement("li");
@@ -69,7 +73,7 @@ function App() {
       translate();
     }
 
-  // Translate Functiom
+    // Translate Function
     function translate() {
       const inputText = inputTextElem.value;
       const inputLanguage = inputLanguageDropdown.querySelector(".selected").dataset.value;
@@ -108,7 +112,7 @@ function App() {
 
     swapBtn.addEventListener("click", swapLanguages);
 
-  // Input Limit  
+    // Input Limit  
     inputTextElem.addEventListener("input", (e) => {
       if (inputTextElem.value.length > 5000) {
         inputTextElem.value = inputTextElem.value.slice(0, 5000);
@@ -117,7 +121,7 @@ function App() {
       translate();
     });
 
-  // Upload Button  
+    // Upload Button  
     uploadDocument.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (
@@ -138,7 +142,7 @@ function App() {
       }
     });
 
-  // Download Button  
+    // Download Button  
     downloadBtn.addEventListener("click", (e) => {
       const outputText = outputTextElem.value;
       const outputLanguage = outputLanguageDropdown.querySelector(".selected").dataset.value;
@@ -152,23 +156,49 @@ function App() {
       }
     });
 
-  // Dark-Light Theme  
+    // Dark-Light Theme  
     const darkModeCheckbox = document.getElementById("dark-mode-btn");
     const handleDarkModeToggle = () => {
       document.body.classList.toggle("dark");
     };
     darkModeCheckbox.addEventListener("change", handleDarkModeToggle);
+    
+    // Image Upload  
+    uploadImage.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith("image/")) {
+        imageUploadTitle.innerHTML = file.name;
+        Tesseract.recognize(
+          file,
+          'eng',
+          {
+            logger: (m) => console.log(m)
+          }
+        ).then(({ data: { text } }) => {
+          inputTextElem.value = text;
+          translate();
+        }).catch((error) => {
+          console.log(error);
+        });
+      } else {
+        alert("Please upload a valid image file");
+      }
+    });
+
     return () => {
       darkModeCheckbox.removeEventListener("change", handleDarkModeToggle);
     };
-  },[]);
+  }, []);
 
   return (
     <>
+      <div className="logo-container">
+        <img src={logo} alt="Logo" className="logo" />
+      </div>
       <div className="mode">
         <label className="toggle" htmlFor="dark-mode-btn">
           <div className="toggle-track">
-            <input type="checkbox" className="toggle-checkbox" id="dark-mode-btn"/>
+            <input type="checkbox" className="toggle-checkbox" id="dark-mode-btn" />
             <span className="toggle-thumb"></span>
             <img src={sun} alt="" />
             <img src={moon} alt="" />
@@ -179,22 +209,24 @@ function App() {
         <div className="card input-wrapper">
           <div className="from">
             <span className="heading">From :</span>
-              <div className="dropdown-container" id="input-language">
-                <div className="dropdown-toggle">
-                  <ion-icon name="globe-outline"></ion-icon>
-                  <span className="selected" data-value="auto">Auto Detect</span>
-                  <ion-icon name="chevron-down-outline"></ion-icon>
-                </div>
-                <ul className="dropdown-menu">
-                  <li className="option active">DropDown Menu Item 1</li>
-                  <li className="option">DropDown Menu Item 2</li>
-                </ul>
+            <div className="dropdown-container" id="input-language">
+              <div className="dropdown-toggle">
+                <ion-icon name="globe-outline"></ion-icon>
+                <span className="selected" data-value="auto">Auto Detect</span>
+                <ion-icon name="chevron-down-outline"></ion-icon>
               </div>
+              <ul className="dropdown-menu">
+                <li className="option active">DropDown Menu Item 1</li>
+                <li className="option">DropDown Menu Item 2</li>
+              </ul>
             </div>
+          </div>
           <div className="text-area">
             <textarea className='input-text' id="input-text" cols="30" rows="10" placeholder="Enter your text here"></textarea>
             <div className="chars"><span id="input-chars">0</span> / 5000</div>
           </div>
+          <div className='line'></div>
+          <div className='buttons'>
           <div className="card-bottom">
             <p>Or choose your document!</p>
             <label htmlFor="upload-document">
@@ -202,6 +234,15 @@ function App() {
               <ion-icon name="cloud-upload-outline"></ion-icon>
               <input type="file" id="upload-document" hidden />
             </label>
+          </div>
+          <div className="card-bottom">
+            <p>Or upload an image!</p>
+            <label htmlFor="upload-image">
+              <span id="image-upload-title">Choose Image</span>
+              <ion-icon name="cloud-upload-outline"></ion-icon>
+              <input type="file" id="upload-image" hidden />
+            </label>
+          </div>
           </div>
         </div>
         <div className="center">
@@ -212,30 +253,40 @@ function App() {
         <div className="card output-wrapper">
           <div className="to">
             <span className="heading">To :</span>
-          <div className="dropdown-container" id="output-language">
-            <div className="dropdown-toggle">
-              <ion-icon name="globe-outline"></ion-icon>
-              <span className="selected" data-value="en">English</span>
-              <ion-icon name="chevron-down-outline"></ion-icon>
+            <div className="dropdown-container" id="output-language">
+              <div className="dropdown-toggle">
+                <ion-icon name="globe-outline"></ion-icon>
+                <span className="selected" data-value="en">English</span>
+                <ion-icon name="chevron-down-outline"></ion-icon>
+              </div>
+              <ul className="dropdown-menu">
+                <li className="option active">DropDown Menu Item 1</li>
+                <li className="option">DropDown Menu Item 2</li>
+              </ul>
             </div>
-            <ul className="dropdown-menu">
-              <li className="option active">DropDown Menu Item 1</li>
-              <li className="option">DropDown Menu Item 2</li>
-            </ul>
+          </div>
+          <textarea id="output-text" cols="30" rows="10" placeholder="Translated text will appear here" disabled></textarea>
+          <div className='line'></div>
+          <div className='buttons'>
+          <div className="card-bottom">
+            <p>Download as a document!</p>
+            <button id="download-btn">
+              <span>Download</span>
+              <ion-icon name="cloud-download-outline"></ion-icon>
+            </button>
+          </div>
+          <div className="card-bottom">
+            <p>Read Aloud</p>
+            <button id="read-button">
+              <span>Read</span>
+              <ion-icon name="volume-high-outline"></ion-icon>
+            </button>
+          </div>
           </div>
         </div>
-        <textarea id="output-text" cols="30" rows="10" placeholder="Translated text will appear here" disabled></textarea>
-        <div className="card-bottom">
-          <p>Download as a document!</p>
-          <button id="download-btn">
-            <span>Download</span>
-            <ion-icon name="cloud-download-outline"></ion-icon>
-          </button>
-        </div>
       </div>
-    </div>
-  </>
-  )
+    </>
+  );
 }
 
-export default App
+export default App;
