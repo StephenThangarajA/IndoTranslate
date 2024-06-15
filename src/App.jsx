@@ -185,6 +185,22 @@ function App() {
       }
     });
 
+    // Function to read text aloud
+    function readText(text) {
+      const speech = new SpeechSynthesisUtterance();
+      speech.text = text;
+      speech.volume = 1;
+      speech.rate = 1;
+      speech.pitch = 1;
+      window.speechSynthesis.speak(speech);
+    }
+
+    // Event listener for Read button
+    const readButton = document.querySelector("#read-button");
+    readButton.addEventListener("click", () => {
+      readText(outputTextElem.value);
+    });
+
     return () => {
       darkModeCheckbox.removeEventListener("change", handleDarkModeToggle);
     };
@@ -192,6 +208,7 @@ function App() {
 
   return (
     <>
+    <div className='top'>
       <div className="logo-container">
         <img src={logo} alt="Logo" className="logo" />
       </div>
@@ -205,6 +222,7 @@ function App() {
           </div>
         </label>
       </div>
+    </div>
       <div className="container">
         <div className="card input-wrapper">
           <div className="from">
@@ -247,7 +265,7 @@ function App() {
         </div>
         <div className="center">
           <div className="swap-position">
-            <ion-icon name="swap-horizontal-outline"></ion-icon>
+            <ion-icon name="swap-horizontal-outline" className="swap-button"></ion-icon>
           </div>
         </div>
         <div className="card output-wrapper">
@@ -265,7 +283,7 @@ function App() {
               </ul>
             </div>
           </div>
-          <textarea id="output-text" cols="30" rows="10" placeholder="Translated text will appear here" disabled></textarea>
+          <textarea className='output-text' id="output-text" cols="30" rows="10" placeholder="Translated text will appear here" disabled></textarea>
           <div className='line'></div>
           <div className='buttons'>
           <div className="card-bottom">

@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #356aff;
+  --primary-color: #000080;
   --bg-color: #f5f5f5;
   --light-bg-color: #fff;
   --text-color: #111116;
@@ -60,7 +60,14 @@ body.dark {
   flex: 1;
   padding: 30px;
   border-radius: 20px;
-  background-color: var(--light-bg-color);
+}
+
+.input-wrapper{
+  background-color: #ff8902;
+}
+
+.output-wrapper{
+  background-color: #138808;
 }
 
 .container .card .from,
@@ -81,7 +88,7 @@ body.dark {
 .container .card .heading {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--light-text-color);
+  color: #ffffff;
   white-space: nowrap;
 }
 
@@ -174,7 +181,7 @@ body.dark {
   resize: none;
   outline: none;
   border: none;
-  color: var(--text-color);
+  color: #ffffff;
   font-size: 18px;
   font-family: "Poppins", sans-serif;
 }
@@ -185,7 +192,15 @@ body.dark {
   right: 0;
   padding: 10px;
   font-size: 0.8rem;
-  color: var(--light-text-color);
+  color: #ffffff;
+}
+
+.input-text::placeholder {
+  color: #ffffff;
+}
+
+.output-text::placeholder {
+  color: #ffffff;
 }
 
 .container .center {
@@ -206,8 +221,8 @@ body.dark {
   cursor: pointer;
   border: 5px solid var(--bg-color);
   transition: all 0.3s ease;
-  color: var(--primary-text-color);
-  background-color: var(--primary-color);
+  color:#ffffff;
+  background-color:#000080;
 }
 
 .line{
@@ -232,6 +247,7 @@ body.dark {
 
 .card-bottom p {
   margin-bottom: 20px;
+  color: #ffffff;
 }
 
 .card-bottom label {
@@ -365,6 +381,7 @@ body.dark {
   position: absolute;
   top: 10px;
   left: 10px;
+  width:100%;
 }
 
 .logo {
@@ -378,4 +395,8 @@ body.dark {
   gap: 50px;
   align-items: center;
   justify-content: center;
+}
+
+.top{
+  margin-bottom: 50px;
 }
