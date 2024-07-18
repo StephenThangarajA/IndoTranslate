@@ -186,19 +186,21 @@ function App() {
     });
 
     // Function to read text aloud
-    function readText(text) {
+    function readText(text, language) {
       const speech = new SpeechSynthesisUtterance();
       speech.text = text;
       speech.volume = 1;
       speech.rate = 1;
       speech.pitch = 1;
+      speech.lang = language;
       window.speechSynthesis.speak(speech);
     }
 
     // Event listener for Read button
     const readButton = document.querySelector("#read-button");
     readButton.addEventListener("click", () => {
-      readText(outputTextElem.value);
+      const outputLanguage = outputLanguageDropdown.querySelector(".selected").dataset.value;
+      readText(outputTextElem.value, outputLanguage);
     });
 
     return () => {
