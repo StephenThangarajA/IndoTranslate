@@ -1,4 +1,4 @@
-# 🌐 IndoTranslate - Effortless Translation for Indian Languages
+# 🌐 IndoTranslate - Translation for Indian Languages
 
 Welcome to **IndoTranslate**, a powerful web-based application built with **React** and **Google Translation API**. This platform is designed to translate text into **native Indian languages**, offering features like **voice input**, **voice output**, and the ability to **download translated text**. 
 
