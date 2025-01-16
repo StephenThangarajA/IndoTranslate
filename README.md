@@ -29,8 +29,6 @@ Welcome to **IndoTranslate**, a powerful web-based application built with **Reac
 - **Translation API**: [Google Translation API](https://cloud.google.com/translate)
 - **Speech Recognition and Synthesis**: [Web Speech API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API)
 - **Styling**: CSS (with responsive design)
-- **Deployment**: [Netlify](https://www.netlify.com/)
-
 ---
 
 ## 🚀 Getting Started
